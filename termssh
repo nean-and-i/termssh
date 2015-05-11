@@ -42,7 +42,7 @@
 ###############################
 # If you are trying get it to work - more verbosity is given and connections are 
 # converted to local /bin/bash  command on local machine executing this script
-DEBUG=0;
+DEBUG=1;
 
 
 ###############################
@@ -161,7 +161,7 @@ function validate_servers() {
 	#Set currapp as array value 
 	currapp=${apparray[index]}
 	
-	if [ -n "$currapp" ]; then 
+	if [ "$currapp" != "" ]; then 
 		 conapps=$conapps"_"$currapp;
 		## Does currentapplication has a value?
 		## Work through env array from above
@@ -171,12 +171,12 @@ function validate_servers() {
 				currserver=${serverarray[serverindex]}
 		#echo $currserver
 		## if it has a value
-				if [ -n "$currserver" ]; then 
+				if [ "$currserver" != "" ]; then 
 			# a-z go through the servers
 			for xx in  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26
 			do
 			x=${alpharray[xx]}
-			if [ -n "$x" ];then
+			if [ "$x" != "" ];then
 				server="$host_start$currserver$host_env$x$currapp"
 				if [ $DEBUG -ge 1 ]; then
 				echo  "Current server: $server "
@@ -295,7 +295,7 @@ function del_entry() {
 		delarray=( $delids )
 		val1=${delarray[0]}
 		val2=${delarray[1]}
-	if [ -z "$val2" ]; then 
+	if [ "$val2"  == "" ]; then 
 		val2=`wc -l $terminator_config_file|awk '{print $1}'`
 	else
 		((val2--))
@@ -477,7 +477,7 @@ function process_config() {
 #############################################################################################
 function check_reconnection() { 
 	local value=$reconnect;
-	if [ -z "$value" ]; then
+	if [ "$value" == "" ]; then
 		value=$DEFAULT_CONNECTIONS;
 	fi
 	if ((value)) 2>/dev/null; then
@@ -565,12 +565,12 @@ set_resolution;
 		layout="test_"$layout
 	fi
 
-		if [ -n "$DEFINED_LAYOUT" ]; then
+		if [ "$DEFINED_LAYOUT" != "" ]; then
 		layout=$DEFINED_LAYOUT
 	fi
 	#changed from asking to giving -r option which sets auto removal
 
-	if [ $REMOVE_LAYOUT -ge 1 ] && [ -n "$layout" ];then
+	if [ $REMOVE_LAYOUT -ge 1 ] && [ "$layout" != "" ];then
 		del_entry
 	fi
 	# If REUSE_LAYOUT_PROMPT IS SET TO 1 and -r not used to prompt for
@@ -615,7 +615,7 @@ set_resolution;
 		colourit green  "Total servers $servercount  | Tabs required $tabtotal |   LAYOUT= $layout $0 -c to reconnect"
 		for ((tabsi=0; tabsi < $tabtotal; tabsi++))
 		do
-			if [ -z "$labels" ];then
+		if [ "$labels" == "" ];then
 				#labels="tab_$tabsi";
 				labels="None";
 			else
